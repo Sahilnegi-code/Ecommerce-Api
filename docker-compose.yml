@@ -1,14 +1,16 @@
 services:
   backend-dev:
-    build:
-      context: .
-      dockerfile: Ecommerce/Dockerfile
+    # build:
+    # context: .
+    # dockerfile: Ecommerce/Dockerfile
+    image: sahilnegi/ecommerce-api:latest
     ports:
       - "5000:5000"
     environment:
       DATABASE_URL: "mysql://root:password@db:3306/smart_app"
       NODE_ENV: development
       PORT: 5000
+      JWT_SECRET: 132324
     depends_on:
       - db
   db:
