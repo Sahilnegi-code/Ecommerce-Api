@@ -1,6 +1,6 @@
 import { Product } from "@prisma/client";
 import { cartItemSchema, changeQuantitySchema } from "../schema/cart";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { prismaClient } from "..";
 import { NotFoundException } from "../exceptions/not-found";
 import { ErrorCode } from "../exceptions/root";
@@ -51,7 +51,7 @@ export const deleteItemFromCart = async (req: CustomRequest, res: Response) => {
   return res.status(200).json({ success: true });
 };
 
-export const changeQuantity = async (req: Request, res: Response) => {
+export const changeQuantity = async (req: CustomRequest, res: Response) => {
   const validateData = changeQuantitySchema.parse(req.body);
   const isCartItemExist = await prismaClient.cartItem.findFirst({
     where: {

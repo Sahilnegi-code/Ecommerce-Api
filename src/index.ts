@@ -21,7 +21,7 @@ export const prismaClient = new PrismaClient({
           country: true,
           pincode: true,
         },
-        compute: (address) => {
+        compute: (address: any) => {
           return `${address.lineOne}, ${address.lineTwo}, ${address.city}, ${address.country} - ${address.pincode}`;
         },
       },
@@ -29,4 +29,6 @@ export const prismaClient = new PrismaClient({
   },
 });
 app.use(errorMiddleware);
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});

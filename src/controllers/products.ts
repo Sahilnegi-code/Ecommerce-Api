@@ -1,14 +1,15 @@
 import { ErrorCode } from "../exceptions/root";
 import { prismaClient } from "../index";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { NotFoundException } from "../exceptions/not-found";
+import { CustomRequest } from "../types/express";
 
 interface Error {
   name: string;
   message: string;
   stack?: string;
 }
-export const createProduct = async (req: Request, res: Response) => {
+export const createProduct = async (req: CustomRequest, res: Response) => {
   const Product = await prismaClient.product.create({
     data: {
       ...req.body,
@@ -18,7 +19,7 @@ export const createProduct = async (req: Request, res: Response) => {
   res.status(201).json({ Product });
 };
 
-export const updateProduct = async (req: Request, res: Response) => {
+export const updateProduct = async (req: CustomRequest, res: Response) => {
   try {
     const Product = req.body;
     if (Product.tags) {
@@ -37,7 +38,7 @@ export const updateProduct = async (req: Request, res: Response) => {
   }
 };
 
-export const listProducts = async (req: Request, res: Response) => {
+export const listProducts = async (req: CustomRequest, res: Response) => {
   const count = await prismaClient.product.count();
   const products = await prismaClient.product.findMany({
     skip: req.query.skip ? Number(req.query.skip) : 0,
@@ -46,7 +47,7 @@ export const listProducts = async (req: Request, res: Response) => {
   res.status(200).json({ count, data: products });
 };
 
-export const deleteProduct = async (req: Request, res: Response) => {
+export const deleteProduct = async (req: CustomRequest, res: Response) => {
   const deletedProduct = await prismaClient.product.findUnique({
     where: {
       id: +req.params.id,
@@ -66,7 +67,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
   res.status(200).json({ message: "Product deleted successfully" });
 };
 
-export const getProductById = async (req: Request, res: Response) => {
+export const getProductById = async (req: CustomRequest, res: Response) => {
   try {
     const product = await prismaClient.product.findFirstOrThrow({
       where: {
@@ -84,7 +85,7 @@ export const getProductById = async (req: Request, res: Response) => {
   }
 };
 
-export const searchProducts = async (req: Request, res: Response) => {
+export const searchProducts = async (req: CustomRequest, res: Response) => {
   const products = await prismaClient.product.findMany({
     where: {
       name: {

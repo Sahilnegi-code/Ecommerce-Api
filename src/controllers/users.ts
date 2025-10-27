@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { addressSchema, updateUserSchema } from "../schema/users";
 import { User } from "@prisma/client";
 import { prismaClient } from "..";
@@ -19,7 +19,7 @@ export const addAddress = async (req: CustomRequest, res: Response) => {
   });
   res.status(201).json(address);
 };
-export const deleteAddress = async (req: Request, res: Response) => {
+export const deleteAddress = async (req: CustomRequest, res: Response) => {
   const addressId = Number(req.params.id);
   if (isNaN(addressId)) {
     throw new BadRequestException(
@@ -116,7 +116,7 @@ export const updateUser = async (req: CustomRequest, res: Response) => {
   res.status(200).json({ success: true });
 };
 
-export const listUsers = async (req: Request, res: Response) => {
+export const listUsers = async (req: CustomRequest, res: Response) => {
   let users;
   let skip = req.query.skip ? Number(req.query.skip) : 0;
   users = await prismaClient.user.findMany({
@@ -126,7 +126,7 @@ export const listUsers = async (req: Request, res: Response) => {
   res.status(200).json({ users });
 };
 
-export const getUserById = async (req: Request, res: Response) => {
+export const getUserById = async (req: CustomRequest, res: Response) => {
   let user;
   try {
     user = await prismaClient.user.findFirstOrThrow({
@@ -143,7 +143,7 @@ export const getUserById = async (req: Request, res: Response) => {
   res.status(200).json({ user });
 };
 
-export const changeUserRole = async (req: Request, res: Response) => {
+export const changeUserRole = async (req: CustomRequest, res: Response) => {
   if (
     !req.params.id ||
     isNaN(Number(req.params.id)) ||

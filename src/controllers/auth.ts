@@ -1,5 +1,5 @@
 import { prismaClient } from "../index";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { compareSync, hashSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../secrets";
@@ -10,7 +10,7 @@ import { signupSchema } from "../schema/users";
 import { NotFoundException } from "../exceptions/not-found";
 import { CustomRequest } from "../types/express";
 export const login = async (
-  req: Request,
+  req: CustomRequest,
   res: Response,
   next: NextFunction
 ): Promise<any> => {
@@ -49,7 +49,7 @@ export const login = async (
 };
 
 export const signUp = async (
-  req: Request,
+  req: CustomRequest,
   res: Response,
   next: NextFunction
 ): Promise<any> => {
